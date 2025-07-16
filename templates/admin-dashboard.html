@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Schedule - Seatify</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://scmsgroup.org/sset/wp-content/uploads/2024/02/sset-1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: black;
+            font-size: 16px;
+            appearance: menulist;
+            -webkit-appearance: menulist;
+            -moz-appearance: menulist;
+        }
+        
+        select option {
+            background-color: white;
+            color: black;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .checkboxes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1em;
+            animation: fadeInOut 5s ease-in-out forwards;
+        }
+
+        .flash-message.success {
+            background: rgba(0, 255, 0, 0.2);
+            color: white;
+        }
+
+        .flash-message.error {
+            background: rgba(255, 0, 0, 0.2);
+            color: white;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            h3 {
+                font-size: 1.8em;
+            }
+            
+            .checkboxes-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+    <script>
+        // Function to update scheduled classes when date or session changes
+        function updateScheduledClasses() {
+            const date = document.getElementById('date').value;
+            const fnAn = document.getElementById('fn_an').value;
+            
+            if (!date || !fnAn) return;
+            
+            // Fetch scheduled classes for this date and session
+            fetch(`/get_scheduled_classes?date=${date}&fn_an=${fnAn}`)
+                .then(response => response.json())
+                .then(data => {
+                    const scheduledClasses = data.scheduled_classes || [];
+                    
+                    // Get all checkboxes
+                    const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
+                    
+                    // Update each checkbox
+                    checkboxes.forEach(checkbox => {
+                        const classId = checkbox.value;
+                        if (scheduledClasses.includes(classId)) {
+                            checkbox.disabled = true;
+                            checkbox.checked = false;
+                            checkbox.parentElement.style.opacity = '0.5';
+                            checkbox.parentElement.style.cursor = 'not-allowed';
+                        } else {
+                            checkbox.disabled = false;
+                            checkbox.parentElement.style.opacity = '1';
+                            checkbox.parentElement.style.cursor = 'pointer';
+                        }
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Add event listeners to date and session inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('date');
+            const fnAnSelect = document.getElementById('fn_an');
+            
+            if (dateInput && fnAnSelect) {
+                dateInput.addEventListener('change', updateScheduledClasses);
+                fnAnSelect.addEventListener('change', updateScheduledClasses);
+                
+                // Initial check
+                updateScheduledClasses();
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">Seatify-Admin</a>
+        <a href="/admin_fun" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <h3>Exam Schedule</h3>
+            <form action="/generate_seat_allocation" method="get">
+                <div class="form-group">
+                    <label for="date">Exam Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fn_an">Session:</label>
+                    <select id="fn_an" name="fn_an" required>
+                        <option value="">Select Session</option>
+                        <option value="FN">FN (Forenoon)</option>
+                        <option value="AN">AN (Afternoon)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="int_ext">Exam Type:</label>
+                    <select id="int_ext" name="int_ext" required>
+                        <option value="">Select Type</option>
+                        <option value="INT">Internal</option>
+                        <option value="EXT">External</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject_code">Subject Code:</label>
+                    <input type="text" id="subject_code" name="subject_code" placeholder="e.g. CSE301" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Classes:</label>
+                    
+                    <!-- First Year Section -->
+                    <div class="section">
+                        <h4 class="section-title">First Year Students (S1 & S2)</h4>
+                        <div class="checkboxes-container">
+                            {% for table in tables %}
+                                {% if table.split('_')[1] in ['1', '2'] %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="{{ table }}" name="table" value="{{ table }}" class="table-checkbox">
+                                        <label for="{{ table }}">{{ table }}</label>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Second Year Section -->
+                    <div class="section">
+                        <h4 class="section-title">Second Year Students (S3 & S4)</h4>
+                        <div class="checkboxes-container">
+                            {% for table in tables %}
+                                {% if table.split('_')[1] in ['3', '4'] %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="{{ table }}" name="table" value="{{ table }}" class="table-checkbox">
+                                        <label for="{{ table }}">{{ table }}</label>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Third Year Section -->
+                    <div class="section">
+                        <h4 class="section-title">Third Year Students (S5 & S6)</h4>
+                        <div class="checkboxes-container">
+                            {% for table in tables %}
+                                {% if table.split('_')[1] in ['5', '6'] %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="{{ table }}" name="table" value="{{ table }}" class="table-checkbox">
+                                        <label for="{{ table }}">{{ table }}</label>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Fourth Year Section -->
+                    <div class="section">
+                        <h4 class="section-title">Fourth Year Students (S7 & S8)</h4>
+                        <div class="checkboxes-container">
+                            {% for table in tables %}
+                                {% if table.split('_')[1] in ['7', '8'] %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="{{ table }}" name="table" value="{{ table }}" class="table-checkbox">
+                                        <label for="{{ table }}">{{ table }}</label>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="tables" name="tables" value="">
+                
+                <div class="button-container">
+                    <button type="submit" id="generate-btn">Generate Seat Allocation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default for the date input
+            const dateInput = document.getElementById('date');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+            
+            // Handle form submission to collect selected tables
+            const form = document.querySelector('form');
+            const generateBtn = document.getElementById('generate-btn');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Disable the button to prevent multiple clicks
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Validate form fields
+                const date = document.getElementById('date').value;
+                const fn_an = document.getElementById('fn_an').value;
+                const int_ext = document.getElementById('int_ext').value;
+                const subject_code = document.getElementById('subject_code').value;
+                
+                if (!date || !fn_an || !int_ext || !subject_code) {
+                    alert('Please fill in all required fields.');
+                    generateBtn.disabled = false;
+                    generateBtn.innerHTML = 'Generate Seat Allocation';
+                    return;
+                }
+
+                const checkboxes = document.querySelectorAll('.table-checkbox:checked');
+                if(checkboxes.length === 0) {
+                    alert('Please select at least one class.');
+                    generateBtn.disabled = false;
+                    generateBtn.innerHTML = 'Generate Seat Allocation';
+                    return;
+                }
+                
+                const selectedTables = Array.from(checkboxes).map(cb => cb.value);
+                document.getElementById('tables').value = selectedTables.join(',');
+                
+                // Add a small delay to ensure UI updates
+                setTimeout(() => {
+                    try {
+                        form.submit();
+                    } catch (error) {
+                        console.error('Form submission error:', error);
+                        alert('There was an error submitting the form. Please try again.');
+                        generateBtn.disabled = false;
+                        generateBtn.innerHTML = 'Generate Seat Allocation';
+                    }
+                }, 100);
+            });
+            
+            // Add click handler directly to the button as a backup
+            generateBtn.addEventListener('click', function(event) {
+                // Prevent default only if form is valid but not submitting
+                if (form.checkValidity() && !this.disabled) {
+                    event.preventDefault();
+                    
+                    // Trigger the form submission manually
+                    const submitEvent = new Event('submit', {
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    form.dispatchEvent(submitEvent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

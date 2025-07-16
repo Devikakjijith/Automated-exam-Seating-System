@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Seatify</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://scmsgroup.org/sset/wp-content/uploads/2024/02/sset-1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 100px);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 60px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .welcome-text {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .welcome-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .welcome-text p {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-top: 0;
+            opacity: 0.9;
+        }
+
+        .login-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 200px;
+            text-decoration: none;
+        }
+
+        .login-button:hover {
+            background-color: white;
+            color: #007bff;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-text h1 {
+                font-size: 2.5rem;
+            }
+            .welcome-text p {
+                font-size: 1.2rem;
+            }
+            .login-box {
+                padding: 30px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Seatify</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="login-box">
+            <div class="welcome-text">
+                <h1>Seatify</h1>
+                <p>Seating Management System</p>
+            </div>
+            <div class="login-options">
+                <a href="/admin-login" class="login-button">Administrator Login</a>
+                <a href="/student-login" class="login-button">Student Login</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Developers: Dazzle Raj, Devika A D, Devika K J, Dhiya Baby</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Seatify</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://scmsgroup.org/sset/wp-content/uploads/2024/02/sset-1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .logout-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logout-button i {
+            margin-right: 8px;
+        }
+
+        .logout-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .dashboard-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .dashboard-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .dashboard-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .dashboard-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .dashboard-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Upload Options Panel (initially hidden) */
+        .upload-options {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .upload-options-content {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg);
+        }
+
+        .upload-option {
+            margin: 15px 0;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .dashboard-box {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Seatify-Admin</a>
+        <a href="/" class="logout-button">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Upload Details Box -->
+        <div class="dashboard-box">
+            <div class="dashboard-icon">
+                <i class="fas fa-upload"></i>
+            </div>
+            <h2 class="dashboard-title">Upload Details</h2>
+            <p class="dashboard-description">
+                Upload student information and room details to set up the seating arrangement system.
+            </p>
+            <button class="dashboard-button" id="uploadDetailsBtn">
+                <i class="fas fa-file-upload"></i> Manage Uploads
+            </button>
+        </div>
+
+        <!-- Time Table Box -->
+        <div class="dashboard-box">
+            <div class="dashboard-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h2 class="dashboard-title">Time Table</h2>
+            <p class="dashboard-description">
+                Upload and manage the examination time table for the current semester.
+            </p>
+            <a href="/timetable-upload" class="dashboard-button">
+                <i class="fas fa-calendar-plus"></i> Manage Time Table
+            </a>
+        </div>
+
+        <!-- Exam Schedule Box -->
+        <div class="dashboard-box">
+            <div class="dashboard-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h2 class="dashboard-title">Seat Allocation</h2>
+            <p class="dashboard-description">
+                Create and manage exam schedules, generate seating arrangements for exams.
+            </p>
+            <a href="/admin-dashboard" class="dashboard-button">
+                <i class="fas fa-tasks"></i> Manage Schedules
+            </a>
+        </div>
+    </div>
+
+    <!-- Upload Options Panel (Hidden by default) -->
+    <div class="upload-options" id="uploadOptions">
+        <div class="upload-options-content">
+            <button class="close-button" id="closeUploadOptions">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="dashboard-title">Upload Options</h2>
+            <div class="upload-option">
+                <a href="/std_data" class="dashboard-button">
+                    <i class="fas fa-user-graduate"></i> Student Data Upload
+                </a>
+            </div>
+            <div class="upload-option">
+                <a href="/room_data" class="dashboard-button">
+                    <i class="fas fa-building"></i> Room Data Upload
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadDetailsBtn = document.getElementById('uploadDetailsBtn');
+            const uploadOptions = document.getElementById('uploadOptions');
+            const closeUploadOptions = document.getElementById('closeUploadOptions');
+
+            // Show upload options panel
+            uploadDetailsBtn.addEventListener('click', function() {
+                uploadOptions.style.display = 'flex';
+                setTimeout(() => {
+                    uploadOptions.style.opacity = '1';
+                }, 10);
+            });
+
+            // Close upload options panel
+            closeUploadOptions.addEventListener('click', function() {
+                uploadOptions.style.opacity = '0';
+                setTimeout(() => {
+                    uploadOptions.style.display = 'none';
+                }, 300);
+            });
+
+            // Close panel when clicking outside
+            uploadOptions.addEventListener('click', function(event) {
+                if (event.target === uploadOptions) {
+                    uploadOptions.style.opacity = '0';
+                    setTimeout(() => {
+                        uploadOptions.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

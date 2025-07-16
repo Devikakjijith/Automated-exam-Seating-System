@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room {{ room_no }} Details - Seatify</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://scmsgroup.org/sset/wp-content/uploads/2024/02/sset-1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .exam-info {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .room-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .room-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .room-subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .room-metadata {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .seating-grid-container {
+            margin-top: 30px;
+        }
+
+        .seating-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .seat {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .seat:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-number {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .seat-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .pdf-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pdf-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 992px) {
+            .seating-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .seating-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .room-title {
+                font-size: 2em;
+            }
+            
+            .metadata-item {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .seating-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-metadata {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pdf-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">Seatify-Admin</a>
+        <div class="navbar-buttons">
+            <a href="/seating?date={{ date }}&fn_an={{ fn_an }}&int_ext={{ int_ext }}&subject_code={{ subject_code }}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Rooms
+            </a>
+        </div>
+    </nav>
+
+    <div class="container" id="pdf-content">
+        <div class="exam-info">
+            <div class="room-header">
+                <h1 class="room-title">Room {{ room_no }}</h1>
+                <p class="room-subtitle">Seating Arrangement</p>
+                <div class="room-metadata">
+                    <div class="metadata-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>{{ date }}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ fn_an }}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-book"></i>
+                        <span>{{ subject_code }}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-building"></i>
+                        <span>Block: {{ block_name }}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-stairs"></i>
+                        <span>Floor: {{ floor }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="seating-grid-container">
+                <div class="seating-grid">
+                    {% for student in students %}
+                    <div class="seat">
+                        <div class="register-number">{{ student.register_number }}</div>
+                        <div class="seat-label">Row: {{ student.row }} | Col: {{ student.col }}</div>
+                        <div class="seat-label">Seat: {{ student.seat_no }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="pdf-button" onclick="generatePDF()">
+                <i class="fas fa-file-pdf"></i> Download as PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Function to generate PDF
+        function generatePDF() {
+            // Configure the PDF and html2canvas libraries
+            window.html2canvas = html2canvas;
+            window.jspdf = window.jspdf;
+            
+            const element = document.getElementById('pdf-content');
+            
+            // Create a clone of the element and style it for PDF
+            const clone = element.cloneNode(true);
+            // Remove the actions section
+            const actions = clone.querySelector('.actions');
+            if (actions) clone.removeChild(actions);
+            
+            // Style the clone for PDF (white background, black text)
+            clone.style.background = 'white';
+            clone.style.padding = '30px';
+            clone.style.borderRadius = '0';
+            clone.style.boxShadow = 'none';
+            
+            // Change text to black for better visibility
+            const allElements = clone.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.color = 'black';
+                if (el.classList.contains('seat')) {
+                    el.style.background = '#f5f5f5';
+                    el.style.border = '1px solid #ddd';
+                }
+                if (el.classList.contains('metadata-item')) {
+                    el.style.background = '#f5f5f5';
+                    el.style.border = '1px solid #ddd';
+                }
+            });
+            
+            // Add to document temporarily
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            document.body.appendChild(clone);
+            
+            // Generate the PDF
+            html2canvas(clone).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                const width = pdf.internal.pageSize.getWidth();
+                const height = canvas.height * width / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+                pdf.save(`Room_{{ room_no }}_Seating.pdf`);
+                
+                // Clean up
+                document.body.removeChild(clone);
+                
+                // Notify server that PDF has been downloaded
+                fetch('/reset_room_allocation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ room: '{{ room_no }}' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Room data reset:', data);
+                })
+                .catch(error => {
+                    console.error('Error resetting room data:', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

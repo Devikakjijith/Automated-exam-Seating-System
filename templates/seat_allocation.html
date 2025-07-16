@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Seat Allocation</h2>
+    
+    {% for room_data in allocation_data %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Room: {{ room_data.room.room_no }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Col 1</th>
+                            <th>Col 2</th>
+                            <th>Col 3</th>
+                            <th>Col 4</th>
+                            <th>Col 5</th>
+                            <th>Col 6</th>
+                            <th>Col 7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in room_data.rows %}
+                        <tr>
+                            {% for student in row %}
+                            <td>
+                                {% if student %}
+                                <div class="student-info">
+                                    <strong>{{ student.register_number }}</strong><br>
+                                    {{ student.name }}<br>
+                                    <small>{{ student.department }} - Sem {{ student.semester }}</small>
+                                </div>
+                                {% else %}
+                                <div class="empty-seat"></div>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.student-info {
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.empty-seat {
+    height: 80px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle;
+    min-width: 150px;
+}
+</style>
+{% endblock %} 
